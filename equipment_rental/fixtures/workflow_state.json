@@ -1,0 +1,56 @@
+[
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-09-01 09:39:19.860301",
+  "name": "On Rent",
+  "style": "Info",
+  "workflow_state_name": "On Rent"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-09-01 09:39:46.225402",
+  "name": "Reserved",
+  "style": "Warning",
+  "workflow_state_name": "Reserved"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2025-09-01 09:39:14.459140",
+  "name": "Extended",
+  "style": "Success",
+  "workflow_state_name": "Extended"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "remove",
+  "modified": "2022-04-04 04:04:04.119400",
+  "name": "Cancelled",
+  "style": "Danger",
+  "workflow_state_name": "Cancelled"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2022-06-30 21:01:51.049070",
+  "name": "Return",
+  "style": "",
+  "workflow_state_name": "Return"
+ },
+ {
+  "docstatus": 0,
+  "doctype": "Workflow State",
+  "icon": "",
+  "modified": "2022-06-29 00:09:58.205508",
+  "name": "Draft",
+  "style": "Primary",
+  "workflow_state_name": "Draft"
+ }
+]

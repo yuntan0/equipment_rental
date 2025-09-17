@@ -1,0 +1,126 @@
+[
+ {
+  "add_total_row": 0,
+  "add_translate_data": 0,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [],
+  "is_standard": "Yes",
+  "javascript": null,
+  "json": null,
+  "letter_head": null,
+  "modified": "2025-07-29 20:51:47.796708",
+  "module": "Equipment Rental",
+  "name": "Sales Performance",
+  "prepared_report": 0,
+  "query": "select * from `tabSales Invoice`",
+  "ref_doctype": "Sales Invoice",
+  "reference_report": null,
+  "report_name": "Sales Performance",
+  "report_script": null,
+  "report_type": "Script Report",
+  "roles": [
+   {
+    "parent": "Sales Performance",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Accounts Manager"
+   },
+   {
+    "parent": "Sales Performance",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Accounts User"
+   },
+   {
+    "parent": "Sales Performance",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Employee Self Service"
+   }
+  ],
+  "timeout": 0
+ },
+ {
+  "add_total_row": 0,
+  "add_translate_data": 0,
+  "columns": [],
+  "disabled": 0,
+  "docstatus": 0,
+  "doctype": "Report",
+  "filters": [],
+  "is_standard": "No",
+  "javascript": null,
+  "json": null,
+  "letter_head": null,
+  "modified": "2025-08-05 20:09:52.269305",
+  "module": "Equipment Rental",
+  "name": "Item Detail",
+  "prepared_report": 0,
+  "query": null,
+  "ref_doctype": "Item",
+  "reference_report": null,
+  "report_name": "Item Detail",
+  "report_script": "def get_chart_data(query):\n\tdata = frappe.db.sql(query, as_list=1)\n\tdatasets = []\n\tdatasets2 = []\n\tlabels = []\n\tfor d in data:\n\t    labels.append(d[0])\n\t    datasets.append(d[2])\n\t    datasets2.append(d[3]/100)\n\tchart = {\"data\": {\"labels\": labels, \"datasets\": [{'values':datasets},{'values':datasets2}]}}\n\tchart[\"type\"] = \"bar\"\n\treturn chart\n\ncolumns = [\n    {\n    'fieldname': 'itemcode',\n    'label': _('Item Code'),\n    'fieldtype': 'Data',\n    'options': 'Item',\n    'width': 300\n    },\n    {\n    'fieldname': 'name',\n    'label': _('Item Name'),    \n    'fieldtype': 'Data',\n    'align': 'left',\n    'width': 200\n    },\n    {\n    'fieldname': 'stock',\n    'label': _('Quantity'),\n    'fieldtype': 'float',\n    'width': 200,\n    'align': 'left'\n    },\n]\n\n\n\nmysql = \"\"\"SELECT \n    `tabItem`.`item_code` AS `itemcode`,\n    `tabItem`.`item_name` AS `name`,\n    SUM(`tabBin`.`actual_qty`) As stock,\n    SUM(`tabBin`.`stock_value`) As stock_value\nFROM \n    `tabItem` \nJOIN \n    `tabBin` ON `tabItem`.`name` = `tabBin`.`item_code`\n    GROUP BY \n    `tabItem`.`item_code`,\n    `tabItem`.`item_name`\"\"\"\n\ndata=frappe.db.sql(mysql,as_dict=True)\n\n\nfor row in data:\n    if float(row.get('stock')) >= 25:\n        float_value=1\n        row['stock'] = '<span style=\"color: blue;\">' + str(row.get('stock')) + '</span>'\n        row['name'] = '<span style=\"color: blue;\">' + str(row.get('name')) + '</span>'\n        row['itemcode'] = '<span style=\"color: red;\">' + str(row.get('itemcode')) + '</span>'\n    \n\nchart = get_chart_data(mysql)\n\nsql_summary = \"\"\"\n    SELECT \n    `tabItem`.`item_group` AS `group`,\n    SUM(`tabBin`.`actual_qty`) As stock\nFROM \n    `tabItem` \nJOIN \n    `tabBin` ON `tabItem`.`name` = `tabBin`.`item_code`\nGROUP BY \n    `tabItem`.`item_group` \"\"\"\n\n\nreport_summary = [{\"value\": row.group, \"label\": row.stock} for row in frappe.db.sql(sql_summary,as_dict=True)]\n\ndata =  columns, data, \"Hello, here is my stock summary, graph and details\", chart, report_summary",
+  "report_type": "Script Report",
+  "roles": [
+   {
+    "parent": "Item Detail",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Item Manager"
+   },
+   {
+    "parent": "Item Detail",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock Manager"
+   },
+   {
+    "parent": "Item Detail",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Stock User"
+   },
+   {
+    "parent": "Item Detail",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Sales User"
+   },
+   {
+    "parent": "Item Detail",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Purchase User"
+   },
+   {
+    "parent": "Item Detail",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Maintenance User"
+   },
+   {
+    "parent": "Item Detail",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Accounts User"
+   },
+   {
+    "parent": "Item Detail",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Manufacturing User"
+   },
+   {
+    "parent": "Item Detail",
+    "parentfield": "roles",
+    "parenttype": "Report",
+    "role": "Desk User"
+   }
+  ],
+  "timeout": 0
+ }
+]
